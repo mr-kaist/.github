@@ -3,9 +3,6 @@ name: ECR Builds Workflow
 on:
   workflow_dispatch
 
-env:
-  REPO_NAME: ${{ github.event.inputs.repoName }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +20,10 @@ jobs:
     - name: Login to AWS ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Get repository name
+      run: echo "REPO_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
+      shell: bash
     
     - name: Create ECR repository
       id: create-repo
