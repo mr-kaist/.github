@@ -22,15 +22,14 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Get repository name
-      run: echo "REPO_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
-      shell: bash
+      run: echo "REPO_NAME=$(echo ${{ github.repository }} | awk -F '/' '{print $2}')" >> $GITHUB_ENV
     
     - name: Create ECR repository
       id: create-repo
       run: aws ecr create-repository --repository-name $REPO_NAME
       continue-on-error: true
 
-    - name: Set repository lifecycle [Keep one image]
+    - name: Set repository lifecycle
       run: aws ecr put-lifecycle-policy \
             --repository-name $REPO_NAME \
             --lifecycle-policy-text "https://mr-kaist.github.io/.github/workflow-templates/policy.json"
@@ -42,9 +41,9 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY"
+        docker build -t $ECR_REGISTRY/$REPO_NAME:latest .
+        docker push $ECR_REGISTRY/$REPO_NAME:latest
+        echo "::set-output name=image::$ECR_REGISTRY/$REPO_NAME:latest"
     
     - name: action-slack
       uses: 8398a7/action-slack@v3
