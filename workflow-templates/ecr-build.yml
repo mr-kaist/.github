@@ -28,12 +28,6 @@ jobs:
       id: create-repo
       run: aws ecr create-repository --repository-name $REPO_NAME
       continue-on-error: true
-
-    - name: Set repository lifecycle
-      run: aws ecr put-lifecycle-policy \
-            --repository-name $REPO_NAME \
-            --lifecycle-policy-text "https://mr-kaist.github.io/.github/workflow-templates/policy.json"
-      if: job.steps.create-repo.status != failure()
       
     - name: Build the Docker image
       id: build-image
