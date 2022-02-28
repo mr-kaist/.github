@@ -1,0 +1,11 @@
+{
+    "name": "ECR Cleanup Workflow",
+    "description": "MR.KAIST AWS ECR Cleanup workflow.",
+    "iconName": "aws-ecr",
+    "categories": [
+        "Dockerfile"
+    ],
+    "filePatterns": [
+        "^Dockerfile"
+    ]
+}

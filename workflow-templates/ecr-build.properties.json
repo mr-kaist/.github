@@ -1,0 +1,11 @@
+{
+    "name": "ECR Builds Workflow",
+    "description": "MR.KAIST AWS ECR CI automation workflow.",
+    "iconName": "aws-ecr",
+    "categories": [
+        "Dockerfile"
+    ],
+    "filePatterns": [
+        "^Dockerfile"
+    ]
+}
